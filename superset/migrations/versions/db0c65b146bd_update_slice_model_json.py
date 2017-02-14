@@ -1,3 +1,4 @@
+# coding: utf8
 """update_slice_model_json
 
 Revision ID: db0c65b146bd
@@ -46,6 +47,7 @@ def upgrade():
             print('Upgraded ({}/{}): {}'.format(i, slice_len, slc.slice_name))
         except Exception as e:
             print(slc.slice_name + ' error: ' + str(e))
+
 
     session.close()
 

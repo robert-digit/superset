@@ -42,6 +42,10 @@ setup(
     zip_safe=False,
     scripts=['superset/bin/superset'],
     install_requires=[
+        'redis==2.10.5',
+        'mysqlclient==1.3.10',
+        'flask==0.12.1',
+        'mysqlclient==1.3.10',
         'boto3==1.4.4',
         'celery==3.1.23',
         'cryptography==1.7.2',
@@ -67,7 +71,9 @@ setup(
         'sqlalchemy==1.1.9',
         'sqlalchemy-utils==0.32.14',
         'sqlparse==0.2.3',
-        'thrift>=0.9.3',
+        'psycopg2==2.6.1',
+        # 'thrift>=0.9.3',
+        'thrift==0.10.0',
         'thrift-sasl>=0.2.1',
     ],
     extras_require={

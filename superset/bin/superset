@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import division
@@ -12,4 +12,8 @@ warnings.simplefilter('ignore', ExtDeprecationWarning)
 from superset.cli import manager
 
 if __name__ == "__main__":
+<<<<<<< f56d0bfc67d4323a2c1c224b4d1d7f62dc5cbc2d
     manager.run()
+=======
+    manager.run()
+>>>>>>> conflict resolution
