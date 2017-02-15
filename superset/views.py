@@ -48,7 +48,7 @@ log_this = models.Log.log_this
 can_access = utils.can_access
 QueryStatus = models.QueryStatus
 
-
+# BaseView reference - http://flask-appbuilder.readthedocs.io/en/latest/views.html
 class BaseSupersetView(BaseView):
     def can_access(self, permission_name, view_name, user=None):
         if not user:
@@ -606,11 +606,11 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
             "for more information on how to structure your URI.", True),
         'expose_in_sqllab': _("Expose this DB in SQL Lab"),
         'allow_run_sync': _(
-            "Allow users to run synchronous queries, this is the default "
+            "Allow users to run synchronous queries. This is the default "
             "and should work well for queries that can be executed "
             "within a web request scope (<~1 minute)"),
         'allow_run_async': _(
-            "Allow users to run queries, against an async backend. "
+            "Allow users to run queries against an async backend. "
             "This assumes that you have a Celery worker setup as well "
             "as a results backend."),
         'allow_ctas': _("Allow CREATE TABLE AS option in SQL Lab"),
@@ -645,11 +645,19 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
     }
 
     def pre_add(self, db):
-        db.set_sqlalchemy_uri(db.sqlalchemy_uri)
-        security.merge_perm(sm, 'database_access', db.perm)
-        for schema in db.all_schema_names():
-            security.merge_perm(
-                sm, 'schema_access', utils.get_schema_perm(db, schema))
+        try:
+            # DEBUG
+            logging.info("Adding db with details")
+            logging.info(dir(db))
+            db.set_sqlalchemy_uri(db.sqlalchemy_uri)
+            security.merge_perm(sm, 'database_access', db.perm)
+            logging.info("Schema names is type {} for details {}".format(type(db.all_schema_names(), db.all_schema_names())))
+            for schema in db.all_schema_names():
+                security.merge_perm(
+                    sm, 'schema_access', utils.get_schema_perm(db, schema))
+        except Exception as e:
+            logging.exception(e)
+            raise Exception("Exception in views.py around line 629 running pre-add on DB")
 
     def pre_update(self, db):
         self.pre_add(db)
