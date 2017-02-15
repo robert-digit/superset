@@ -622,12 +622,14 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
             logging.info("Adding db with details")
             logging.info(dir(db))
             db.set_sqlalchemy_uri(db.sqlalchemy_uri)
+            logging.info("about to run merge_perm with sm {} and perm {}".format(sm, db.perm))
             security.merge_perm(sm, 'database_access', db.perm)
-            logging.info("Schema names is type {} for details {}".format(type(db.all_schema_names(), db.all_schema_names())))
+            logging.info("Schema names is type {} for details {}".format(db.all_schema_names()))
             for schema in db.all_schema_names():
                 security.merge_perm(
                     sm, 'schema_access', utils.get_schema_perm(db, schema))
         except Exception as e:
+            logging.error("Got an error adding DB source - {}".format(e))
             logging.exception(e)
             raise Exception("Exception in views.py around line 629 running pre-add on DB")
 
