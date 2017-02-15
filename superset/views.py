@@ -648,12 +648,12 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
         try:
             # DEBUG
             logging.info("Adding db with details")
-            logging.info(dir(db))
             db.set_sqlalchemy_uri(db.sqlalchemy_uri)
             logging.info("about to run merge_perm with sm {} and perm {}".format(sm, db.perm))
             security.merge_perm(sm, 'database_access', db.perm)
             logging.info("Schema names is {}".format(db.all_schema_names()))
             for schema in db.all_schema_names():
+                logging.info("Merging security perms for {}".format(schema))
                 security.merge_perm(
                     sm, 'schema_access', utils.get_schema_perm(db, schema))
         except Exception as e:
