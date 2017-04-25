@@ -43,6 +43,7 @@ setup(
     scripts=['superset/bin/superset'],
     install_requires=[
         'flask==0.12.1',
+        'mysqlclient==1.3.10',
         'boto3==1.4.4',
         'celery==3.1.23',
         'cryptography==1.8.1',
